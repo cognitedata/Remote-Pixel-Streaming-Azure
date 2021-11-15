@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 variable "base_name" {
-  default = "random"
+  default = "remote"
 }
 
 #This is the region where the global resource group will be deployed, and global resources like Traffic Manager, etc...
 variable "global_region" {
-  default = "eastus"
+  default = "westeurope"
 }
 
 #This is the name of the global resource group that has shared resources across regions like Traffic Manager, Azure Key Vault, etc..
 variable "base_resource_group_name" {
-  default = "global-unreal-rg"
+  default = "pixelstreaming-autoscaling-az"
 }
 
 #Storage account tier
