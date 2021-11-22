@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.45.1"
+      version = "2.46.1"
     }
   }
 }
@@ -127,7 +127,7 @@ resource "azurerm_application_insights" "appI" {
   name                = format("%s-appinsights-%s", local.base_name, lower(var.global_region))
   resource_group_name = azurerm_resource_group.rg_global.name
   location            = azurerm_resource_group.rg_global.location
-  application_type    = "web"
+  application_type    = "other"
   retention_in_days   = var.application_insights_retention_in_days
 }
 

@@ -6,12 +6,12 @@ variable "base_name" {
 
 #This is the region where the global resource group will be deployed, and global resources like Traffic Manager, etc...
 variable "global_region" {
-  default = "westeurope"
+  default = "northeurope"
 }
 
 #This is the name of the global resource group that has shared resources across regions like Traffic Manager, Azure Key Vault, etc..
 variable "base_resource_group_name" {
-  default = "pixelstreaming-autoscaling-az"
+  default = "global-ssr-az"
 }
 
 #Storage account tier
