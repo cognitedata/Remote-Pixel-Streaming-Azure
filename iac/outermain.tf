@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.46.1"
+      version = "2.86.0"
     }
   }
 }
@@ -13,7 +13,7 @@ provider "azurerm" {
   features {
     key_vault {
       purge_soft_delete_on_destroy    = true
-      recover_soft_deleted_key_vaults = false
+      recover_soft_deleted_key_vaults = true
     }
   }
   ##Pixel Streaming on Azure Epic Games attribution
@@ -106,7 +106,7 @@ resource "azurerm_key_vault" "akv" {
 
 #implement the traffic manager
 resource "azurerm_traffic_manager_profile" "traffic_manager_profile" {
-  name                   = format("%s-trafficmgr", local.base_name)
+  name                   = format("%s-trafficmanager", local.base_name)
   resource_group_name    = azurerm_resource_group.rg_global.name
   traffic_routing_method = "Performance"
 
@@ -118,7 +118,6 @@ resource "azurerm_traffic_manager_profile" "traffic_manager_profile" {
   monitor_config {
     protocol = "TCP"
     port     = var.traffic_manager_profile_port
-    path     = ""
   }
 }
 
