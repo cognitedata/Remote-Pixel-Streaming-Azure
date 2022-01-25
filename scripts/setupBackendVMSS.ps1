@@ -20,7 +20,7 @@ Param (
   [Parameter(Mandatory = $false, HelpMessage = "The resolution height of the 3D app, default 1080")]
   [int] $resolutionHeight = 1080,
   [Parameter(Mandatory = $false, HelpMessage = "The name of the 3D app, default PixelStreamingDemo")]
-  [string] $pixel_stream_application_name = "PixelStreamingDemo",
+  [string] $pixel_stream_application_name = "CogniteRemotePixelStreaming",
   [Parameter(Mandatory = $false, HelpMessage = "The frames per second of the 3D app, default -1 which reverts to default behavior of UE")]
   [int] $fps = -1,
   [Parameter(Mandatory = $True, HelpMessage = "git path")]

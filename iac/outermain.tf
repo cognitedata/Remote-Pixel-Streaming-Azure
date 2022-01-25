@@ -104,29 +104,12 @@ resource "azurerm_key_vault" "akv" {
   }
 }
 
-#implement the traffic manager
-resource "azurerm_traffic_manager_profile" "traffic_manager_profile" {
-  name                   = format("%s-trafficmanager", local.base_name)
-  resource_group_name    = azurerm_resource_group.rg_global.name
-  traffic_routing_method = "Performance"
-
-  dns_config {
-    relative_name = format("%s", local.base_name)
-    ttl           = 100
-  }
-
-  monitor_config {
-    protocol = "TCP"
-    port     = var.traffic_manager_profile_port
-  }
-}
-
 #implement appinsights
 resource "azurerm_application_insights" "appI" {
   name                = format("%s-appinsights-%s", local.base_name, lower(var.global_region))
   resource_group_name = azurerm_resource_group.rg_global.name
   location            = azurerm_resource_group.rg_global.location
-  application_type    = "other"
+  application_type    = "web"
   retention_in_days   = var.application_insights_retention_in_days
 }
 
@@ -162,6 +145,36 @@ module "region_deployment" {
   storage_account_id   = azurerm_storage_account.storageaccount.id
   storage_account_name = azurerm_storage_account.storageaccount.name
   storage_account_key  = azurerm_storage_account.storageaccount.primary_access_key
+}
+
+
+#implement the traffic manager
+resource "azurerm_traffic_manager_profile" "traffic_manager_profile" {
+  name                   = format("%s-trafficmgr", local.base_name)
+  resource_group_name    = azurerm_resource_group.rg_global.name
+  traffic_routing_method = "Performance"
+
+  dns_config {
+    relative_name = format("%s", local.base_name)
+    ttl           = 100
+  }
+
+  lifecycle {
+    ignore_changes = [
+      dns_config,
+      profile_status,
+      max_return,
+      tags,
+      traffic_view_enabled,
+      monitor_config,
+      timeouts
+    ]
+  }
+  
+  monitor_config {
+    protocol = "TCP"
+    port     = var.traffic_manager_profile_port
+  }
 }
 
 

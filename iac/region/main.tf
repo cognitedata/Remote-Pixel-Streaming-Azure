@@ -226,7 +226,7 @@ locals {
   mm-short_command = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -gitpath ${var.gitpath};"
 
   #if git-pat is "" then don't add that parameter
-  mm-paramstring = var.git-pat != "" ? local.mm-command : local.mm-short_command
+  mm-paramstring = local.mm-short_command
 }
 
 resource "azurerm_virtual_machine_extension" "mmextension" {
@@ -350,7 +350,7 @@ locals {
   #azurerm_public_ip.pip.fqdn
 
   #if git-pat is "" then don't add that parameter
-  be-paramstring = var.git-pat != "" ? local.be_command : local.be_short_command
+  be-paramstring = local.be_short_command
 }
 
 resource "azurerm_virtual_machine_scale_set_extension" "ue4extension" {

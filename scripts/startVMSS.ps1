@@ -12,7 +12,7 @@ Param (
     [Parameter(Position=3, Mandatory=$false, HelpMessage = "The resolution height of the 3D app, default 1080")]
     [int] $resolutionHeight = 1080,
     [Parameter(Position=4, Mandatory=$false, HelpMessage = "The name of the 3D app, default PixelStreamingDemo")]
-    [string] $pixel_stream_application_name = "PixelStreamingDemo"
+    [string] $pixel_stream_application_name = "CogniteRemotePixelStreaming"
 )
 
 #####################################################################################################

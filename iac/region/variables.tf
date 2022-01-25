@@ -12,7 +12,7 @@ variable "gitpath" {
 
 #The name of the Unreal 3D App, (i.e., PixelStreamingDemo.exe without the .exe at the end)
 variable "pixel_stream_application_name" {
-  default = "PixelStreamingDemo"
+  default = "CogniteRemotePixelStreaming"
 }
 
 #Resolution width and height for the 3D App to run (smaller resolutions can fit more streams per GPU and/or a higher FPS)

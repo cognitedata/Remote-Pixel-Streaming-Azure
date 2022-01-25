@@ -11,7 +11,7 @@ variable "global_region" {
 
 #This is the name of the global resource group that has shared resources across regions like Traffic Manager, Azure Key Vault, etc..
 variable "base_resource_group_name" {
-  default = "global-ssr-az"
+  default = "global-unreal-rg"
 }
 
 #Storage account tier

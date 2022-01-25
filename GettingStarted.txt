@@ -1,0 +1,16 @@
+# Getting started with Cognite Remote
+
+### Setup
+The Cognite Remote application is based on Unreal Engine 4, and requires certain libraries to be installed on your computer to work correctly. 
+These libraries can be installed by running the Unreal Engine prerequisite installer found in this folder: Engine\Extras\Redist\en-us\UE4PrereqSetup_x64.exe
+
+### Logging in
+To log in, you need to enter the name of the Cognite Data Fusion (CDF) project on the login screen. This often corresponds to the name of your company.
+Clicking continue will take you to the login portal for the specific CDF project.
+Some CDF projects have their own CDF environment, and in order to log in to such projects you need to input the CDF environment in the advanced options.
+In addition to the standard login portal we also support logging in using an API key. 
+This can be done using the advanced options on the loing screen, but we recommend only using this if strictly necessary.
+
+### Time zones
+The advanced options in the login screen allows you to select a time zone for the application. 
+All time stamps in the application (including time series values) will be displayed using the selected time zone.

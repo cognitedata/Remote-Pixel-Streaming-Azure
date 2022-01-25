@@ -30,8 +30,11 @@ az group delete --name $r3 --no-wait --yes
 $r4 = $rootvariable + "-southeastasia-unreal-rg"
 az group delete --name $r4 --no-wait --yes
 
-$r5 = $rootvariable + "-global-unreal-rg"
+$r5 = $rootvariable + "-northeurope-unreal-rg"
 az group delete --name $r5 --no-wait --yes
+
+$r6 = $rootvariable + "-global-unreal-rg"
+az group delete --name $r6 --no-wait --yes
 
 #step 2 delete the resource peerings if they exist
 az network vnet peering delete --name LinkVnet1ToVnet2 --resource-group OtherAssets --vnet-name $vnetname
