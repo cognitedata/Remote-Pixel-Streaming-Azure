@@ -25,6 +25,8 @@ Param (
   [int] $fps = -1,
   [Parameter(Mandatory = $True, HelpMessage = "git path")]
   [String]$gitpath = "",
+  [Parameter(Mandatory = $False, HelpMessage = "git path branch")]
+  [String]$gitpath_branch = "",
   [Parameter(Mandatory = $False, HelpMessage = "github access token")]
   [String]$pat = ""
 )
@@ -116,7 +118,19 @@ if ( (Get-ChildItem $folderNoTrail | Measure-Object).Count -eq 0) {
     Start-Sleep 10
 
     logmessage "Git Clone Start"
-    git clone --depth 1 $gitpath $folderNoTrail --q
+
+    logmessage "Path: $gitpath"
+    logmessage "Branch: $gitpath_branch"
+
+    if ([string]::IsNullOrEmpty($gitpath_branch)) {
+      git clone --depth 1 $gitpath $folderNoTrail --q
+      logmessage "Git Path Clone without Branch | $folderNoTrail"
+    } 
+    else {
+      git clone --depth 1 -b $gitpath_branch $gitpath $folderNoTrail --q
+      logmessage "Git Path with Branch $gitpath_branch | $folderNoTrail"
+    }
+    
     logmessage "Git Clone Complete"
 
     logmessage "Git cloning process Complete"
@@ -150,7 +164,7 @@ if ($fps -gt -1) {
     if (-not (Test-Path -LiteralPath $engineIniFilepath)) {
       logmessage "Cannot find Engine.ini folder - creating it and adding Engine.ini"
       New-Item -Path $engineIniFilepath -ItemType directory
-      New-Item -Path ($engineIniFilepath+"\Engine.ini") -ItemType File
+      New-Item -Path ($engineIniFilepath + "\Engine.ini") -ItemType File
     }
     else {
       logmessage "Adding FPS config to Engine.ini"

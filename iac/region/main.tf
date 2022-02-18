@@ -50,7 +50,7 @@ locals {
 
   mm_security_rules = {
     "Open80In"   = { security_rule_priority = 1000, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "80", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
-    "Open3389In" = { security_rule_priority = 1030, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "3389", security_rule_source_address_prefix = "64.223.129.16", security_rule_destination_address_prefix = "*" },
+    "Open3389In" = { security_rule_priority = 1030, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "3389", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open443In"  = { security_rule_priority = 1040, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "443", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open80Out"  = { security_rule_priority = 1000, security_rule_direction = "Outbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "80", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open443Out" = { security_rule_priority = 1060, security_rule_direction = "Outbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "443", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" }
@@ -59,7 +59,7 @@ locals {
     "Open80In"   = { security_rule_priority = 1000, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "80", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open8888In" = { security_rule_priority = 1040, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "8888", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open8889In" = { security_rule_priority = 1050, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "8889", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" }
-    "Open3389In" = { security_rule_priority = 1060, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "3389", security_rule_source_address_prefix = "64.223.129.16", security_rule_destination_address_prefix = "*" },
+    "Open3389In" = { security_rule_priority = 1060, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "3389", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open443In"  = { security_rule_priority = 1070, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "443", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open8890In" = { security_rule_priority = 1080, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "8890", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" },
     "Open8891In" = { security_rule_priority = 1090, security_rule_direction = "Inbound", security_rule_access = "Allow", security_rule_protocol = "Tcp", security_rule_source_port_range = "*", security_rule_destination_port_range = "8891", security_rule_source_address_prefix = "*", security_rule_destination_address_prefix = "*" }
@@ -145,7 +145,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   admin_password           = local.safePWD
   enable_automatic_updates = true
   provision_vm_agent       = true
- 
+
   network_interface_ids = [
     azurerm_network_interface.nic.id,
   ]
@@ -166,7 +166,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
     type = "SystemAssigned"
   }
 
-  custom_data = filebase64("../scripts/setupMatchMakerVM.ps1")
+  custom_data = filebase64("../scripts/setupMatchMakerVM_1.ps1")
 }
 
 //do a role assignment for the new system identity
@@ -223,7 +223,7 @@ variable "git-pat" {
 locals {
   extension_name   = "MM-CS-Extension"
   mm-command       = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -gitpath ${var.gitpath} -pat ${var.git-pat};"
-  mm-short_command = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -gitpath ${var.gitpath};"
+  mm-short_command = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -gitpath ${var.gitpath} -gitpath_branch ${var.gitpath_branch};"
 
   #if git-pat is "" then don't add that parameter
   mm-paramstring = local.mm-short_command
@@ -268,7 +268,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
 
   enable_automatic_updates = true
   upgrade_mode             = "Automatic"
- 
+
   identity {
     type = "SystemAssigned"
   }
@@ -302,7 +302,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
       }
     }
   }
-  custom_data = filebase64("../scripts/setupBackendVMSS.ps1")
+  custom_data = filebase64("../scripts/setupBackendVMSS_1.ps1")
 }
 
 resource "azurerm_role_assignment" "vmss_role_assignment" {
@@ -346,7 +346,7 @@ locals {
   internal_fqdn          = format("%s.%s", azurerm_network_interface.nic.internal_dns_name_label, azurerm_network_interface.nic.internal_domain_name_suffix)
   backend_extension_name = "BE-CS-Extension"
   be_command             = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -mm_lb_fqdn ${local.internal_fqdn} -instancesPerNode ${var.instancesPerNode} -streamingPort ${var.streamingPort} -resolutionWidth ${var.resolutionWidth} -resolutionHeight ${var.resolutionHeight} -pixel_stream_application_name ${var.pixel_stream_application_name} -fps ${var.fps} -gitpath ${var.gitpath} -pat ${var.git-pat};"
-  be_short_command       = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -mm_lb_fqdn ${local.internal_fqdn} -instancesPerNode ${var.instancesPerNode} -streamingPort ${var.streamingPort} -resolutionWidth ${var.resolutionWidth} -resolutionHeight ${var.resolutionHeight} -pixel_stream_application_name ${var.pixel_stream_application_name} -fps ${var.fps} -gitpath ${var.gitpath};"
+  be_short_command       = "powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command cp c:/AzureData/CustomData.bin c:/AzureData/install.ps1; c:/AzureData/install.ps1 -subscription_id ${var.subscription_id} -resource_group_name ${azurerm_resource_group.region-rg.name} -vmss_name ${local.vmss_name} -application_insights_key ${var.instrumentation_key} -mm_lb_fqdn ${local.internal_fqdn} -instancesPerNode ${var.instancesPerNode} -streamingPort ${var.streamingPort} -resolutionWidth ${var.resolutionWidth} -resolutionHeight ${var.resolutionHeight} -pixel_stream_application_name ${var.pixel_stream_application_name} -fps ${var.fps} -gitpath ${var.gitpath} -gitpath_branch ${var.gitpath_branch};"
   #azurerm_public_ip.pip.fqdn
 
   #if git-pat is "" then don't add that parameter

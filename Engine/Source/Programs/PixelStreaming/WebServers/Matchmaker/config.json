@@ -1,0 +1,19 @@
+{
+	"HttpPort": 80,
+	"UseHTTPS": false,
+	"MatchmakerPort": 9999,
+	"LogToFile": true,
+	"enableAutoScale": true,
+	"instancesPerNode": 1,
+	"instanceCountBuffer": 1,
+	"percentBuffer": 25,
+	"minInstanceCount": 0,
+	"maxInstanceCount": 250,
+	"scaleDownByAmount": 1,
+	"minMinutesBetweenScaledowns": 60,
+	"subscriptionId": "",
+	"resourceGroup": "",
+	"virtualMachineScaleSet": "",
+	"appInsightsInstrumentationKey": "",
+	"region": ""
+}

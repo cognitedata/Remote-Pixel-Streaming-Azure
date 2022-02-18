@@ -7,7 +7,11 @@
 
 #CHANGE: Set your forked path here for your GitHub repo (and be sure to check in changes as scripts pull resources from GitHub)
 variable "gitpath" {
-  default = "https://github.com/cognitedata/Remote-Pixel-Streaming-Azure/tree/initial-poc-test"
+  default = "https://github.com/cognitedata/Remote-Pixel-Streaming-Azure/"
+}
+
+variable "gitpath_branch" {
+  default = "initial-poc-test"
 }
 
 #The name of the Unreal 3D App, (i.e., PixelStreamingDemo.exe without the .exe at the end)
