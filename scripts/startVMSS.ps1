@@ -3,16 +3,16 @@
 
 [CmdletBinding()]
 Param (
-    [Parameter(Position=0, Mandatory=$false, HelpMessage = "Current instance number for a Signlaing Server folder, default 1")]
-    [int] $instanceNum = 1,
-    [Parameter(Position=1, Mandatory=$false, HelpMessage = "The streaming port start for multiple instances, default 8888")]
-    [int] $streamingPort = 8888,
-    [Parameter(Position=2, Mandatory=$false, HelpMessage = "The resolution width of the 3D app, default 1920")]
-    [int] $resolutionWidth = 1920,
-    [Parameter(Position=3, Mandatory=$false, HelpMessage = "The resolution height of the 3D app, default 1080")]
-    [int] $resolutionHeight = 1080,
-    [Parameter(Position=4, Mandatory=$false, HelpMessage = "The name of the 3D app, default PixelStreamingDemo")]
-    [string] $pixel_stream_application_name = "CogniteRemotePixelStreaming"
+   [Parameter(Position = 0, Mandatory = $false, HelpMessage = "Current instance number for a Signlaing Server folder, default 1")]
+   [int] $instanceNum = 1,
+   [Parameter(Position = 1, Mandatory = $false, HelpMessage = "The streaming port start for multiple instances, default 8888")]
+   [int] $streamingPort = 8888,
+   [Parameter(Position = 2, Mandatory = $false, HelpMessage = "The resolution width of the 3D app, default 1920")]
+   [int] $resolutionWidth = 1920,
+   [Parameter(Position = 3, Mandatory = $false, HelpMessage = "The resolution height of the 3D app, default 1080")]
+   [int] $resolutionHeight = 1080,
+   [Parameter(Position = 4, Mandatory = $false, HelpMessage = "The name of the 3D app, default PixelStreamingDemo")]
+   [string] $pixel_stream_application_name = "CogniteRemotePixelStreaming"
 )
 
 #####################################################################################################
@@ -21,7 +21,7 @@ Param (
 $PixelStreamerFolder = "C:\Unreal\"
 $PixelStreamerExecFile = $PixelStreamerFolder + $pixel_stream_application_name + ".exe"
 $vmServiceFolder = "C:\Unreal\Engine\Source\Programs\PixelStreaming\WebServers\SignallingWebServer"
-if($instanceNum -gt 1) {
+if ($instanceNum -gt 1) {
    $vmServiceFolder = $vmServiceFolder + $instanceNum
 }
 
@@ -32,7 +32,7 @@ $stdout = $logsfolder + '\ue4-signalservice-stdout' + (get-date).ToString('MMddy
 $stderr = $logsfolder + '\ue4-signalservice-stderr' + (get-date).ToString('MMddyyhhmmss') + '.txt'
 
 #pixelstreamer arguments
-$port = $streamingPort + ($instanceNum-1)
+$port = $streamingPort + ($instanceNum - 1)
 $audioMixerArg = "-AudioMixer"
 $streamingIPArg = "-PixelStreamingIP=localhost"
 $streamingPortArg = "-PixelStreamingPort=" + $port
@@ -99,20 +99,6 @@ if (-not (Test-Path -LiteralPath $PixelStreamerExecFile)) {
    Add-Content -Path $logoutput -Value $logMessage
 }
 
-try {
-& $PixelStreamerExecFile $audioMixerArg $streamingIPArg $streamingPortArg $renderOffScreenArg -WinX=0 -WinY=0 $resolutionWidthArg $resolutionHeightArg -Windowed -ForceRes
-$logMessage = "started :" + $PixelStreamerExecFile 
-}
-catch {
-   $logMessage = "Exception in starting Pixel Streamer : " + $_.Exception.Message
-   Write-Output $logmessage
- }
- finally {
-   $error.clear()
- }
-
-Add-Content -Path $logoutput -Value $logMessage
-
 if (-not (Test-Path -LiteralPath $vmServiceFolder)) {
    $logMessage = "SignalService folder :" + $vmServiceFolder + " doesn't exist" 
    Write-EventLog -LogName "Application" -Source "PixelStreamer" -EventID 3104 -EntryType Error -Message $logMessage
@@ -149,13 +135,12 @@ try {
    $akvcert = (az keyvault certificate list-versions --vault-name $akv -n "unrealpixelstreaming" --query "[].{Name:name}" -o table).Count
 
    #download the cert to the folder (1 means there is no cert, 3 or more indicates the specific cert was found)
-   if ($akvcert -gt 1) 
-   {
+   if ($akvcert -gt 1) {
       logMessage = "The fqdn :"+$fqdn
       Add-Content -Path $logoutput -Value $logMessage
 
-      $fqdn = $fqdn.replace(".cloudapp.azure.com/","")  
-      $fqdn = $fqdn.replace(".","-")  + $customDomainName
+      $fqdn = $fqdn.replace(".cloudapp.azure.com/", "")  
+      $fqdn = $fqdn.replace(".", "-") + $customDomainName
       logMessage = "The new fqdn :"+$fqdn
       Add-Content -Path $logoutput -Value $logMessage
    }
@@ -182,4 +167,18 @@ else {
    Write-EventLog -LogName "Application" -Source "PixelStreamer" -EventID 3106 -EntryType Information -Message $logMessage
 }
 
+Add-Content -Path $logoutput -Value $logMessage
+
+try {
+   & $PixelStreamerExecFile $audioMixerArg $streamingIPArg $streamingPortArg $renderOffScreenArg -WinX=0 -WinY=0 $resolutionWidthArg $resolutionHeightArg -Windowed -ForceRes
+   $logMessage = "started :" + $PixelStreamerExecFile 
+}
+catch {
+   $logMessage = "Exception in starting Pixel Streamer : " + $_.Exception.Message
+   Write-Output $logmessage
+}
+finally {
+   $error.clear()
+}
+   
 Add-Content -Path $logoutput -Value $logMessage
