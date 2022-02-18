@@ -169,6 +169,12 @@ else {
 
 Add-Content -Path $logoutput -Value $logMessage
 
+
+Start-Sleep -Seconds 30
+$logMessage = "Wait for 30 secs" 
+
+Add-Content -Path $logoutput -Value $logMessage
+
 try {
    & $PixelStreamerExecFile $audioMixerArg $streamingIPArg $streamingPortArg $renderOffScreenArg -WinX=0 -WinY=0 $resolutionWidthArg $resolutionHeightArg -Windowed -ForceRes
    $logMessage = "started :" + $PixelStreamerExecFile 
