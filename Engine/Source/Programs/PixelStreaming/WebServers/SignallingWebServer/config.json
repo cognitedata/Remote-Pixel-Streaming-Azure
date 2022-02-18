@@ -17,6 +17,6 @@
 	"resourceGroup": "",
 	"virtualMachineScaleSet": "",
 	"appInsightsInstrumentationKey": "",
-	"unrealAppName": "PixelStreamingDemo",
+	"unrealAppName": "CogniteRemotePixelStreaming",
 	"region": ""
 }
