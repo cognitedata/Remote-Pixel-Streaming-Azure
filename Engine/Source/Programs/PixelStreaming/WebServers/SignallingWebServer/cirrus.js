@@ -426,8 +426,12 @@ playerServer.on('connection', function (ws, req) {
 		if(players.size == 0) {
 			try {
 				var spawn = require("child_process").spawn,child;
+				var streamerPort
+				if (!config.streamerPort) {
+					streamerPort = 8888;
+				}
 				// TODO: Need to pass in a config path to this for more robustness and not hard coded
-				child = spawn("powershell.exe",[`C:\\Unreal\\scripts\\OnClientDisconnected.ps1 ${config.unrealAppName} ${config.streamerPort}`]);
+				child = spawn("powershell.exe",[`C:\\Unreal\\scripts\\OnClientDisconnected.ps1 ${config.unrealAppName} ${streamerPort}`]);
 				
 				child.stdout.on("data", function(data) {
 					console.log("PowerShell Data: " + data);
