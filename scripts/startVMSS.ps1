@@ -156,25 +156,6 @@ catch {
    Add-Content -Path $logoutput -Value $logMessage
 }
 
-start-process "cmd.exe" "/c .\runAzure.bat"  -RedirectStandardOutput $stdout -RedirectStandardError $stderr -ErrorVariable ProcessError
-
-if ($ProcessError) {
-   $logMessage = "Error in starting Signal Service"
-   Write-EventLog -LogName "Application" -Source "PixelStreamer" -EventID 3105 -EntryType Error -Message $logMessage
-}
-else {
-   $logMessage = "Started vmss sucessfully runAzure.bat" 
-   Write-EventLog -LogName "Application" -Source "PixelStreamer" -EventID 3106 -EntryType Information -Message $logMessage
-}
-
-Add-Content -Path $logoutput -Value $logMessage
-
-
-Start-Sleep -Seconds 30
-$logMessage = "Wait for 30 secs" 
-
-Add-Content -Path $logoutput -Value $logMessage
-
 try {
    & $PixelStreamerExecFile $audioMixerArg $streamingIPArg $streamingPortArg $renderOffScreenArg -WinX=0 -WinY=0 $resolutionWidthArg $resolutionHeightArg -Windowed -ForceRes
    $logMessage = "started :" + $PixelStreamerExecFile 
@@ -187,4 +168,17 @@ finally {
    $error.clear()
 }
    
+Add-Content -Path $logoutput -Value $logMessage
+
+start-process "cmd.exe" "/c .\runAzure.bat"  -RedirectStandardOutput $stdout -RedirectStandardError $stderr -ErrorVariable ProcessError
+
+if ($ProcessError) {
+   $logMessage = "Error in starting Signal Service"
+   Write-EventLog -LogName "Application" -Source "PixelStreamer" -EventID 3105 -EntryType Error -Message $logMessage
+}
+else {
+   $logMessage = "Started vmss sucessfully runAzure.bat" 
+   Write-EventLog -LogName "Application" -Source "PixelStreamer" -EventID 3106 -EntryType Information -Message $logMessage
+}
+
 Add-Content -Path $logoutput -Value $logMessage
